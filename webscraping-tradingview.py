@@ -44,7 +44,6 @@ for x in range(5):
 
 
 
-
 #SOME USEFUL FUNCTIONS IN BEAUTIFULSOUP
 #-----------------------------------------------#
 # find(tag, attributes, recursive, text, keywords)

@@ -43,13 +43,43 @@ write_sheet = wb['Second Sheet']
 read_wb = xl.load_workbook('ProduceReport.xlsx')
 read_ws = read_wb['ProduceReport']
 
-for row in range(1, read_ws.max_row + 1):
-    for col in range(1,5):
+#for row in range(1, read_ws.max_row + 1):
+    #for col in range(1,5):
         # Read value from sheet
-        cell_value = read_ws.cell(row = row, column = col).value
+        #cell_value = read_ws.cell(row = row, column = col).value
 
         # Write value to the target sheet
-        write_sheet.cell(row=row, column=col).value = cell_value
+        #write_sheet.cell(row=row, column=col).value = cell_value
+
+for row in read_ws.iter_rows():
+    ls = [i.value for i in row]
+    write_sheet.append(ls)
+
+max_row = write_sheet.max_row
+
+write_sheet.cell(max_row+2, 2).value = 'Total'
+write_sheet.cell(max_row+2, 2).font = Font(size=16,bold=True)
+
+write_sheet.cell(max_row+2, 3).value = '=SUM(C2:C' + str(max_row) + ')'
+write_sheet.cell(max_row+2, 4).value = '=SUM(D2:C' + str(max_row) + ')'
+
+write_sheet.cell(max_row+4, 2).value = 'Average'
+write_sheet.cell(max_row+4, 2).font = Font(size=16,bold=True)
+
+write_sheet.cell(max_row+4, 3).value = '=Average(C2:C' + str(max_row) + ')'
+write_sheet.cell(max_row+4, 4).value = '=Average(D2:C' + str(max_row) + ')'
+
+write_sheet.column_dimensions['A'].width = 16
+write_sheet.column_dimensions['B'].width = 15
+write_sheet.column_dimensions['C'].width = 15
+write_sheet.column_dimensions['D'].width = 15
+
+for cell in write_sheet['C:C']:
+    cell.number_format = '#,##0'
+
+for cell in write_sheet['D:D']:
+    cell.number_format = u'"$ "#,##0.00'
+
 
 wb.save('PythontoExcel.xlsx')
 
